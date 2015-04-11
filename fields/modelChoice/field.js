@@ -31,6 +31,13 @@ Formation.Fields.ModelSingleChoice = function Field( params ){
     var instance = this.field.model.findOne({ _id: this.value });
     return instance;
   };
+  params.summary = function summary(){
+    var obj = this.toDOM();
+    if ( obj && obj.summary )
+      return obj.summary();
+    else
+      return undefined;
+  };
 
   ModelChoiceField.call( this, params );
 
@@ -71,6 +78,14 @@ Formation.Fields.ModelMultipleChoice = function Field( params ){
     if ( typeof( value ) === "string" ) value = [ value ];
     if (! value instanceof Array ) return [];
     return value;
+  };
+  params.summary = function summary(){
+    var selectedIds = this.toDOM();
+    var summaries = [];
+    selectedIds.forEach( function( item ){
+      summaries.push( item.summary() );
+    });
+    return summaries.join( ', ' );
   };
 
   params.defaultValue = params.defaultValue || function(){ return [] };
