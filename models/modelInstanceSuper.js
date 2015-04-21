@@ -27,10 +27,13 @@ ModelInstanceSuper = function( params ){
   }
 
   var save;
-  if (! params.model.collection && typeof( params.model.save ) === 'function' )
+
+  if ( _.isFunction( params.model.save ) ) {
     save = params.model.save;
-  else
+  }
+  else {
     save = saveInstance;
+  }
 
   var savable = params.model.savable;
   if ( savable === null ){
